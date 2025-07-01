@@ -3,9 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
   GameState,
-  Position,
-  BOARD_WIDTH,
-  BOARD_HEIGHT
+  Position
 } from '@/types/tetris';
 import {
   createEmptyBoard,
@@ -19,6 +17,7 @@ import {
   getDropSpeed,
   isGameOver
 } from '@/utils/tetris';
+import { getHighScore, updateHighScore } from '@/utils/localStorage';
 
 export const useTetris = () => {
   const [gameState, setGameState] = useState<GameState>(() => ({
@@ -28,6 +27,7 @@ export const useTetris = () => {
     score: 0,
     level: 0,
     lines: 0,
+    highScore: getHighScore(),
     gameOver: false,
     isPaused: false
   }));
@@ -109,12 +109,14 @@ export const useTetris = () => {
         const newNextPiece = getRandomTetromino();
 
         if (isGameOver(newBoard, nextPiece)) {
+          const isNewHighScore = updateHighScore(newScore);
           return {
             ...prevState,
             board: newBoard,
             score: newScore,
             level: newLevel,
             lines: newLines,
+            highScore: isNewHighScore ? newScore : prevState.highScore,
             gameOver: true
           };
         }
@@ -158,12 +160,14 @@ export const useTetris = () => {
       const newNextPiece = getRandomTetromino();
 
       if (isGameOver(newBoard, nextPiece)) {
+        const isNewHighScore = updateHighScore(newScore);
         return {
           ...prevState,
           board: newBoard,
           score: newScore,
           level: newLevel,
           lines: newLines,
+          highScore: isNewHighScore ? newScore : prevState.highScore,
           gameOver: true
         };
       }
@@ -188,16 +192,17 @@ export const useTetris = () => {
   }, []);
 
   const resetGame = useCallback(() => {
-    setGameState({
+    setGameState(prevState => ({
       board: createEmptyBoard(),
       currentPiece: getRandomTetromino(),
       nextPiece: getRandomTetromino(),
       score: 0,
       level: 0,
       lines: 0,
+      highScore: prevState.highScore,
       gameOver: false,
       isPaused: false
-    });
+    }));
   }, []);
 
   useEffect(() => {
