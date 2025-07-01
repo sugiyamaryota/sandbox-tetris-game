@@ -7,15 +7,21 @@ interface GameInfoProps {
   score: number;
   level: number;
   lines: number;
+  highScore: number;
   nextPiece: Tetromino | null;
 }
 
-const GameInfo: React.FC<GameInfoProps> = ({ score, level, lines, nextPiece }) => {
+const GameInfo: React.FC<GameInfoProps> = ({ score, level, lines, highScore, nextPiece }) => {
   return (
     <div className="game-info">
       <div className="score-section">
         <h3>スコア</h3>
         <p>{score.toLocaleString()}</p>
+      </div>
+      
+      <div className="high-score-section">
+        <h3>最高記録</h3>
+        <p>{highScore.toLocaleString()}</p>
       </div>
       
       <div className="level-section">

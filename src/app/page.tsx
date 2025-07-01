@@ -11,7 +11,6 @@ export default function Home() {
     gameState,
     movePiece,
     rotatePiece,
-    dropPiece,
     hardDrop,
     pauseGame,
     resetGame
@@ -39,6 +38,7 @@ export default function Home() {
             score={gameState.score}
             level={gameState.level}
             lines={gameState.lines}
+            highScore={gameState.highScore}
             nextPiece={gameState.nextPiece}
           />
         </div>

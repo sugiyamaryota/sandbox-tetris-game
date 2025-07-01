@@ -18,6 +18,7 @@ export interface GameState {
   score: number;
   level: number;
   lines: number;
+  highScore: number;
   gameOver: boolean;
   isPaused: boolean;
 }
